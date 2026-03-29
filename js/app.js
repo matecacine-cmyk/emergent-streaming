@@ -254,8 +254,13 @@ const Router = {
       if (e.state) this.go(e.state.page, e.state.params);
     });
     const hash = location.hash.replace('#', '');
-    if (hash && this.routes[hash]) this.go(hash, {});
-    else this.go('home', {});
+    // Páginas que precisam de params não são restauráveis ao refrescar
+    const noRestore = ['watch', 'search'];
+    if (hash && this.routes[hash] && !noRestore.includes(hash)) {
+      this.go(hash, {});
+    } else {
+      this.go('home', {});
+    }
   },
 };
 
