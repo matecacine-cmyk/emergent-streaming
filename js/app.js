@@ -159,6 +159,7 @@ const App = {
   renderCard(item, type) {
     if (!item.poster_path || item.media_type === 'person') return '';
     const id = item.id;
+    const actualType = (item.media_type === 'movie' || item.media_type === 'tv') ? item.media_type : type;
     const title = item.title || item.name;
     const poster = TMDB.img(item.poster_path);
     const year = (item.release_date || item.first_air_date || '').substring(0, 4);
@@ -166,7 +167,7 @@ const App = {
     const inList = this.inWishlist(id);
 
     return `
-      <div class="card" onclick="Router.go('watch',{type:'${type}',id:${id}})">
+      <div class="card" onclick="Router.go('watch',{type:'${actualType}',id:${id}})">
         <div class="card-img-wrap">
           <img src="${poster}" alt="${title}" loading="lazy"
                onerror="this.src='https://via.placeholder.com/300x450/111/333?text=Sem+Imagem'">
@@ -174,7 +175,7 @@ const App = {
             <button class="play-btn">▶</button>
           </div>
           <button class="wishlist-btn ${inList ? 'active' : ''}" data-wishlist="${id}"
-            onclick="event.stopPropagation(); App.toggleWishlist(${id},'${type}','${title.replace(/'/g,"\\'")}','${item.poster_path || ''}')">
+            onclick="event.stopPropagation(); App.toggleWishlist(${id},'${actualType}','${title.replace(/'/g,"\\'")}','${item.poster_path || ''}')">
             ${inList ? '♥' : '♡'}
           </button>
           ${item.vote_average ? `<div class="card-rating">⭐ ${rating}</div>` : ''}
