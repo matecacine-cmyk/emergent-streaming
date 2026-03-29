@@ -7,6 +7,7 @@ const TMDB = {
     const res = await window.fetch(url, {
       headers: { Authorization: `Bearer ${CONFIG.TMDB_BEARER}` }
     });
+    if (res.status === 404) return { results: [], status_code: 404 };
     if (!res.ok) throw new Error(`TMDB ${res.status}`);
     return res.json();
   },
@@ -43,8 +44,16 @@ const TMDB = {
   onAir: (page = 1) =>
     TMDB.fetch('/tv/on_the_air', { page }),
 
-  details: (type, id) =>
-    TMDB.fetch(`/${type}/${id}`, { append_to_response: 'videos,credits,similar,recommendations' }),
+  async details(type, id) {
+    // Tenta com append_to_response, em caso de erro tenta sem
+    try {
+      const data = await TMDB.fetch(`/${type}/${id}`, { append_to_response: 'videos,credits,similar,recommendations' });
+      if (data.status_code === 404 || !data.id) throw new Error('not found');
+      return data;
+    } catch(e) {
+      return TMDB.fetch(`/${type}/${id}`);
+    }
+  },
 
   genres: (type = 'movie') =>
     TMDB.fetch(`/genre/${type}/list`),

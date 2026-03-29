@@ -157,6 +157,7 @@ const App = {
   },
 
   renderCard(item, type) {
+    if (!item.poster_path || item.media_type === 'person') return '';
     const id = item.id;
     const title = item.title || item.name;
     const poster = TMDB.img(item.poster_path);
@@ -418,7 +419,9 @@ const Pages = {
 
   // WATCH / DETALHES
   async watch(params) {
-    const { type, id } = params;
+    let { type, id } = params;
+    if (!type || !id || type === 'person') { Router.go('home'); return; }
+    if (type !== 'movie' && type !== 'tv') type = 'movie';
     Pages.set(`<div class="loading-detail"></div>`);
     try {
       const data = await TMDB.details(type, id);
