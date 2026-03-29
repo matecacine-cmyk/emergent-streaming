@@ -10,13 +10,19 @@
   <meta name="theme-color" content="#0086d4">
   <link rel="stylesheet" href="css/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Emergent">
+  <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=E&background=0086d4&color=fff&size=192&bold=true&font-size=0.6">
 </head>
 <body>
 
 <!-- ─── Loader ─────────────────────────────────────────────────────────────── -->
 <div id="page-loader">
   <div class="loader-logo">
-    <div class="logo-text">DON<span style="color:#fff">FLIX</span></div>
+    <div class="logo-text">EMER<span style="color:#fff">GENT</span></div>
     <div class="loader-bar"></div>
   </div>
 </div>
@@ -45,6 +51,7 @@
       <button class="header-icon" onclick="Router.go('mylist')" title="Minha Lista">♡</button>
     </div>
 
+    <button id="install-btn" onclick="deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{deferredPrompt=null; this.style.display='none'})" style="display:none; align-items:center; gap:6px; padding:7px 14px; background:var(--blue); color:#fff; border-radius:6px; font-size:0.82rem; font-weight:600; border:none; cursor:pointer;">⬇ Instalar App</button>
     <button class="hamburger" id="hamburger" onclick="document.getElementById('mobile-nav').classList.toggle('open')">
       <span></span><span></span><span></span>
     </button>
@@ -139,6 +146,25 @@
   // Header scroll effect
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('solid', window.scrollY > 60);
+  });
+
+  // PWA Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
+
+  // Botão de instalar PWA
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById('install-btn');
+    if (btn) btn.style.display = 'flex';
+  });
+
+  window.addEventListener('appinstalled', () => {
+    const btn = document.getElementById('install-btn');
+    if (btn) btn.style.display = 'none';
   });
 </script>
 </body>
