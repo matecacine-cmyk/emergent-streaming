@@ -1,4 +1,4 @@
-const CACHE = 'emergent-v3';
+const CACHE = 'emergent-v4';
 const STATIC = [
   '/',
   '/index.html',
