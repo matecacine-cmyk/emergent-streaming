@@ -336,6 +336,7 @@ nav { display: flex; gap: 4px; }
   box-shadow: 0 4px 16px rgba(0,0,0,0.6);
   animation: toast-in 0.3s ease; max-width: 300px;
 }
+.toast.error { border-left-color: var(--red); }
 @keyframes toast-in { from { transform: translateX(80px); opacity: 0; } to { transform: none; opacity: 1; } }
 
 /* ─── Error ───────────────────────────────────────────────────────────────── */

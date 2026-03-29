@@ -518,6 +518,9 @@ const Pages = {
           ` : ''}
         </div>
       `);
+      // Auto-fallback de servidor
+      setTimeout(() => Pages.initAutoFallback(id, type, s, e), 200);
+
       // Carregar providers em background (não bloqueia o render)
       TMDB.watchProviders(type, id).then(pData => {
         const pt = pData?.results?.PT;
@@ -555,6 +558,40 @@ const Pages = {
     } catch(e) {
       Pages.set(`<div class="error-msg"><h2>Erro</h2><p>${e.message}</p></div>`);
     }
+  },
+
+  initAutoFallback(id, type, season, episode) {
+    const frame = document.getElementById('player-frame');
+    if (!frame) return;
+    const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
+    let current = 0;
+    let timer = null;
+
+    const tryNext = () => {
+      current++;
+      if (current >= servers.length) {
+        App.showToast('Nenhum servidor disponível de momento.', 'error');
+        return;
+      }
+      App.showToast(`Servidor sem resposta — a tentar ${servers[current].name}...`);
+      Pages.changeServer(id, type, season, episode, current);
+      startTimer();
+    };
+
+    const startTimer = () => {
+      clearTimeout(timer);
+      timer = setTimeout(tryNext, 15000);
+    };
+
+    // Quando o iframe carrega (qualquer resposta), cancela o timer
+    const onLoad = () => {
+      clearTimeout(timer);
+      // Remove listener para não interferir com trocas manuais
+      frame.removeEventListener('load', onLoad);
+    };
+    frame.addEventListener('load', onLoad);
+
+    startTimer();
   },
 
   changeServer(id, type, season, episode, serverIdx) {
