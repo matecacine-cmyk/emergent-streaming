@@ -443,12 +443,12 @@ const Pages = {
       if (type === 'movie') {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
-          <iframe id="player-frame" src="${servers[0].url(id)}" allowfullscreen allow="autoplay; fullscreen"></iframe>
+          <iframe id="player-frame" src="${servers[0].url(id)}" allowfullscreen allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox"></iframe>
         `;
       } else if (seasons.length > 0) {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
-          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allowfullscreen allow="autoplay; fullscreen"></iframe>
+          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allowfullscreen allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox"></iframe>
           <div class="episode-selector">
             <select id="season-sel" onchange="Pages.changeSeason(${id}, this.value)">
               ${seasons.map(se => `<option value="${se.season_number}" ${se.season_number == s ? 'selected' : ''}>Temporada ${se.season_number}</option>`).join('')}
@@ -518,6 +518,7 @@ const Pages = {
     const frame = document.getElementById('player-frame');
     if (!frame) return;
     const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
+    frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox');
     frame.src = type === 'movie'
       ? servers[serverIdx].url(id)
       : servers[serverIdx].url(id, season, episode);
