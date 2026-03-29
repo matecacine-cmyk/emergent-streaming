@@ -78,4 +78,7 @@ const TMDB = {
       sort_by: 'popularity.desc',
       page,
     }),
+
+  watchProviders: (type, id) =>
+    TMDB.fetch(`/${type}/${id}/watch/providers`),
 };

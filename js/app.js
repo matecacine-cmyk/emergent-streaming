@@ -518,6 +518,40 @@ const Pages = {
           ` : ''}
         </div>
       `);
+      // Carregar providers em background (não bloqueia o render)
+      TMDB.watchProviders(type, id).then(pData => {
+        const pt = pData?.results?.PT;
+        if (!pt) return;
+        const providers = [...(pt.flatrate || []), ...(pt.rent || []), ...(pt.buy || [])];
+        // Remover duplicados por provider_id
+        const seen = new Set();
+        const unique = providers.filter(p => { if (seen.has(p.provider_id)) return false; seen.add(p.provider_id); return true; });
+        if (!unique.length) return;
+
+        const html = `
+          <div class="watch-providers">
+            <h4>Também disponível em</h4>
+            <div class="providers-list">
+              ${unique.map(p => {
+                const logo = `https://image.tmdb.org/t/p/w45${p.logo_path}`;
+                let href = pt.link || '#';
+                // Link de afiliado Amazon
+                if (p.provider_name.toLowerCase().includes('amazon') || p.provider_name.toLowerCase().includes('prime')) {
+                  href = `https://www.amazon.es/gp/video/search?phrase=${encodeURIComponent(title)}&tag=${CONFIG.AMAZON_TAG}`;
+                }
+                return `<a href="${href}" target="_blank" rel="noopener" class="provider-item" title="${p.provider_name}">
+                  <img src="${logo}" alt="${p.provider_name}">
+                  <span>${p.provider_name}</span>
+                </a>`;
+              }).join('')}
+            </div>
+            <p class="providers-note">Assiste legalmente e apoia os criadores</p>
+          </div>
+        `;
+        const actionsEl = document.querySelector('.watch-actions');
+        if (actionsEl) actionsEl.insertAdjacentHTML('afterend', html);
+      }).catch(() => {});
+
     } catch(e) {
       Pages.set(`<div class="error-msg"><h2>Erro</h2><p>${e.message}</p></div>`);
     }

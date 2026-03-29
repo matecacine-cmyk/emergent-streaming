@@ -23,4 +23,7 @@ const CONFIG = {
   ],
   EMBED_MOVIE: (id) => `https://vidsrc.xyz/embed/movie?tmdb=${id}`,
   EMBED_TV: (id, s = 1, e = 1) => `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
+
+  // Amazon Associates ID — substitui por o teu quando tiveres
+  AMAZON_TAG: 'emergent-21',
 };

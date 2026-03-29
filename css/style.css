@@ -306,6 +306,19 @@ nav { display: flex; gap: 4px; }
 .cast-item span { display: block; font-size: 0.7rem; margin-top: 4px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .similar-section { padding: 0 4%; }
 .similar-section h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 14px; }
+/* ─── Watch Providers ────────────────────────────────────────────────────── */
+.watch-providers { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--bg3); }
+.watch-providers h4 { font-size: 0.85rem; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+.providers-list { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.provider-item {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  text-decoration: none; transition: transform var(--transition), opacity var(--transition);
+}
+.provider-item:hover { transform: translateY(-3px); opacity: 0.85; }
+.provider-item img { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; }
+.provider-item span { font-size: 0.65rem; color: var(--text3); text-align: center; max-width: 52px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.providers-note { font-size: 0.72rem; color: var(--text3); margin-top: 4px; }
+
 .loading-detail { min-height: 80vh; display: flex; align-items: center; justify-content: center; }
 .loading-detail::after { content: ''; width: 40px; height: 40px; border: 3px solid var(--bg3); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
