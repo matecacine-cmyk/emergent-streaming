@@ -374,6 +374,13 @@ footer { background: var(--bg2); border-top: 1px solid var(--bg3); padding: 40px
 .footer-bottom p { color: var(--text3); font-size: 0.8rem; }
 .tmdb-badge { display: flex; align-items: center; gap: 6px; color: var(--text3); font-size: 0.75rem; }
 .tmdb-badge img { height: 18px; }
+.kofi-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px; padding: 10px 20px; border-radius: var(--radius);
+  background: #FF5E5B; color: #fff; font-size: 0.88rem; font-weight: 700;
+  transition: opacity var(--transition), transform var(--transition);
+}
+.kofi-btn:hover { opacity: 0.88; transform: translateY(-2px); }
 
 /* ─── Responsive ──────────────────────────────────────────────────────────── */
 
