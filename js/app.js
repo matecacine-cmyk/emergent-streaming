@@ -429,14 +429,26 @@ const Pages = {
       const similar = data.similar?.results?.slice(0, 8) || [];
       const seasons = data.seasons?.filter(s => s.season_number > 0) || [];
 
+      const s = params.season || 1;
+      const e = params.episode || 1;
+      const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
+      const serverBtns = servers.map((srv, i) => `
+        <button class="server-btn ${i === 0 ? 'active' : ''}"
+          onclick="Pages.changeServer(${id},'${type}',${s},${e},${i})">
+          ${srv.name}
+        </button>
+      `).join('');
+
       let playerHtml = '';
       if (type === 'movie') {
-        playerHtml = `<iframe src="${CONFIG.EMBED_MOVIE(id)}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
-      } else if (seasons.length > 0) {
-        const s = params.season || 1;
-        const e = params.episode || 1;
         playerHtml = `
-          <iframe id="player-frame" src="${CONFIG.EMBED_TV(id, s, e)}" allowfullscreen allow="autoplay; fullscreen"></iframe>
+          <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
+          <iframe id="player-frame" src="${servers[0].url(id)}" allowfullscreen allow="autoplay; fullscreen"></iframe>
+        `;
+      } else if (seasons.length > 0) {
+        playerHtml = `
+          <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
+          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allowfullscreen allow="autoplay; fullscreen"></iframe>
           <div class="episode-selector">
             <select id="season-sel" onchange="Pages.changeSeason(${id}, this.value)">
               ${seasons.map(se => `<option value="${se.season_number}" ${se.season_number == s ? 'selected' : ''}>Temporada ${se.season_number}</option>`).join('')}
@@ -500,6 +512,18 @@ const Pages = {
     } catch(e) {
       Pages.set(`<div class="error-msg"><h2>Erro</h2><p>${e.message}</p></div>`);
     }
+  },
+
+  changeServer(id, type, season, episode, serverIdx) {
+    const frame = document.getElementById('player-frame');
+    if (!frame) return;
+    const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
+    frame.src = type === 'movie'
+      ? servers[serverIdx].url(id)
+      : servers[serverIdx].url(id, season, episode);
+    document.querySelectorAll('.server-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i === serverIdx);
+    });
   },
 
   async changeSeason(id, season) {

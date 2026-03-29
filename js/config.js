@@ -8,7 +8,19 @@ const CONFIG = {
   LANG: 'pt-PT',
   REGION: 'PT',
 
-  // Embeds para ver filmes/séries (fontes públicas)
-  EMBED_MOVIE: (id) => `https://vidsrc.to/embed/movie/${id}`,
-  EMBED_TV: (id, s = 1, e = 1) => `https://vidsrc.to/embed/tv/${id}/${s}/${e}`,
+  // Servidores de embed (por ordem de preferência - menos anúncios primeiro)
+  SERVERS_MOVIE: [
+    { name: 'Servidor 1', url: (id) => `https://vidsrc.xyz/embed/movie?tmdb=${id}` },
+    { name: 'Servidor 2', url: (id) => `https://embed.su/embed/movie/${id}` },
+    { name: 'Servidor 3', url: (id) => `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1` },
+    { name: 'Servidor 4', url: (id) => `https://vidsrc.to/embed/movie/${id}` },
+  ],
+  SERVERS_TV: [
+    { name: 'Servidor 1', url: (id, s, e) => `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}` },
+    { name: 'Servidor 2', url: (id, s, e) => `https://embed.su/embed/tv/${id}/${s}/${e}` },
+    { name: 'Servidor 3', url: (id, s, e) => `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1&s=${s}&e=${e}` },
+    { name: 'Servidor 4', url: (id, s, e) => `https://vidsrc.to/embed/tv/${id}/${s}/${e}` },
+  ],
+  EMBED_MOVIE: (id) => `https://vidsrc.xyz/embed/movie?tmdb=${id}`,
+  EMBED_TV: (id, s = 1, e = 1) => `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
 };

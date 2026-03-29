@@ -250,6 +250,13 @@ nav { display: flex; gap: 4px; }
 .pagination button.active { background: var(--blue); border-color: var(--blue); color: #fff; }
 .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
 
+/* ─── Server Bar ─────────────────────────────────────────────────────────── */
+.server-bar { background: var(--bg2); padding: 10px 4%; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid var(--bg3); }
+.server-bar span { color: var(--text3); font-size: 0.82rem; }
+.server-btn { padding: 5px 14px; border-radius: 20px; background: var(--bg3); border: 1.5px solid var(--bg4); font-size: 0.8rem; color: var(--text2); transition: all var(--transition); }
+.server-btn:hover { border-color: var(--blue); color: var(--text); }
+.server-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
 /* ─── Watch Page ──────────────────────────────────────────────────────────── */
 .watch-page { padding: 0 0 60px; }
 .player-wrap { width: 100%; background: #000; aspect-ratio: 16/9; }
