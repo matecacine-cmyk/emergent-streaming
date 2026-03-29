@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DonFlix — Filmes e Séries Online</title>
+  <meta name="description" content="Vê filmes, séries e anime online grátis. Catálogo com milhares de títulos.">
+  <meta property="og:title" content="DonFlix — Filmes e Séries Online">
+  <meta property="og:description" content="O melhor site para ver filmes e séries online grátis em português.">
+  <meta name="theme-color" content="#0086d4">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+</head>
+<body>
+
+<!-- ─── Loader ─────────────────────────────────────────────────────────────── -->
+<div id="page-loader">
+  <div class="loader-logo">
+    <div class="logo-text">DON<span style="color:#fff">FLIX</span></div>
+    <div class="loader-bar"></div>
+  </div>
+</div>
+
+<!-- ─── Header ─────────────────────────────────────────────────────────────── -->
+<header id="header">
+  <div class="header-inner">
+    <a class="logo" href="#" onclick="Router.go('home'); return false;">DON<span>FLIX</span></a>
+
+    <nav>
+      <a class="nav-link active" data-page="home" href="#home" onclick="Router.go('home'); return false;">Início</a>
+      <a class="nav-link" data-page="movies" href="#movies" onclick="Router.go('movies'); return false;">Filmes</a>
+      <a class="nav-link" data-page="series" href="#series" onclick="Router.go('series'); return false;">Séries</a>
+      <a class="nav-link" data-page="anime" href="#anime" onclick="Router.go('anime'); return false;">Anime</a>
+      <a class="nav-link" data-page="mylist" href="#mylist" onclick="Router.go('mylist'); return false;">Minha Lista</a>
+    </nav>
+
+    <div class="header-right">
+      <div class="search-wrap">
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Pesquisar...">
+          <button id="search-btn">🔍</button>
+        </div>
+        <div class="search-suggestions" id="search-suggestions"></div>
+      </div>
+      <button class="header-icon" onclick="Router.go('mylist')" title="Minha Lista">♡</button>
+    </div>
+
+    <button class="hamburger" id="hamburger" onclick="document.getElementById('mobile-nav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ─── Mobile Nav ──────────────────────────────────────────────────────────── -->
+<div class="mobile-nav" id="mobile-nav">
+  <button class="mobile-nav-close" onclick="document.getElementById('mobile-nav').classList.remove('open')">✕</button>
+  <a href="#" onclick="Router.go('home'); document.getElementById('mobile-nav').classList.remove('open'); return false;">Início</a>
+  <a href="#" onclick="Router.go('movies'); document.getElementById('mobile-nav').classList.remove('open'); return false;">Filmes</a>
+  <a href="#" onclick="Router.go('series'); document.getElementById('mobile-nav').classList.remove('open'); return false;">Séries</a>
+  <a href="#" onclick="Router.go('anime'); document.getElementById('mobile-nav').classList.remove('open'); return false;">Anime</a>
+  <a href="#" onclick="Router.go('mylist'); document.getElementById('mobile-nav').classList.remove('open'); return false;">Minha Lista</a>
+</div>
+
+<!-- ─── Main Content ────────────────────────────────────────────────────────── -->
+<main id="main-content"></main>
+
+<!-- ─── Footer ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <span class="footer-logo">DON<span style="color:#fff">FLIX</span></span>
+      <p class="footer-desc">O teu portal de entretenimento online. Filmes, séries e anime em português.</p>
+      <p class="footer-disclaimer">Este site não armazena nenhum ficheiro nos seus servidores. Todo o conteúdo é fornecido por serviços de terceiros. Não temos qualquer afiliação com o conteúdo exibido.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="#" onclick="Router.go('home')">Início</a></li>
+        <li><a href="#" onclick="Router.go('movies')">Filmes</a></li>
+        <li><a href="#" onclick="Router.go('series')">Séries</a></li>
+        <li><a href="#" onclick="Router.go('anime')">Anime</a></li>
+        <li><a href="#" onclick="Router.go('mylist')">Minha Lista</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Géneros</h4>
+      <ul>
+        <li><a href="#" onclick="Router.go('movies',{genre:28})">Ação</a></li>
+        <li><a href="#" onclick="Router.go('movies',{genre:35})">Comédia</a></li>
+        <li><a href="#" onclick="Router.go('movies',{genre:27})">Terror</a></li>
+        <li><a href="#" onclick="Router.go('movies',{genre:878})">Ficção Científica</a></li>
+        <li><a href="#" onclick="Router.go('movies',{genre:10749})">Romance</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Termos de Uso</a></li>
+        <li><a href="#">Privacidade</a></li>
+        <li><a href="#">DMCA</a></li>
+        <li><a href="#">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© <span id="year"></span> DonFlix. Conteúdo fornecido por terceiros.</p>
+    <div class="tmdb-badge">
+      <span>Dados por</span>
+      <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="TMDB">
+    </div>
+  </div>
+</footer>
+
+<!-- ─── Chat ─────────────────────────────────────────────────────────────────── -->
+<button id="chat-btn" title="Suporte">💬</button>
+<div id="chat-window">
+  <div class="chat-header">
+    <h4>💬 Suporte DonFlix</h4>
+    <button id="chat-close">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-msg bot">Olá! 👋 Como posso ajudar hoje?</div>
+  </div>
+  <div class="chat-input-wrap">
+    <input type="text" id="chat-input" placeholder="Escreve uma mensagem...">
+    <button id="chat-send">Enviar</button>
+  </div>
+</div>
+
+<!-- ─── Toast Container ──────────────────────────────────────────────────────── -->
+<div id="toast-container"></div>
+
+<!-- ─── Scripts ──────────────────────────────────────────────────────────────── -->
+<script src="js/config.js"></script>
+<script src="js/tmdb.js"></script>
+<script src="js/app.js"></script>
+
+<script>
+  // Header scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('solid', window.scrollY > 60);
+  });
+</script>
+</body>
+</html>
