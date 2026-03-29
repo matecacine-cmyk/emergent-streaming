@@ -1,6 +1,6 @@
-// ─── DonFlix App ──────────────────────────────────────────────────────────────
+// ─── Emergent App ──────────────────────────────────────────────────────────────
 const App = {
-  wishlist: JSON.parse(localStorage.getItem('donflix_wishlist') || '[]'),
+  wishlist: JSON.parse(localStorage.getItem('emergent_wishlist') || '[]'),
   searchTimeout: null,
 
   init() {
@@ -133,7 +133,7 @@ const App = {
       this.wishlist.push({ id, type, title, poster });
       this.showToast(`Adicionado à lista: ${title}`);
     }
-    localStorage.setItem('donflix_wishlist', JSON.stringify(this.wishlist));
+    localStorage.setItem('emergent_wishlist', JSON.stringify(this.wishlist));
     document.querySelectorAll(`[data-wishlist="${id}"]`).forEach(el => {
       el.classList.toggle('active', this.wishlist.some(w => w.id === id));
     });

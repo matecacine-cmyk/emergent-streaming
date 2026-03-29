@@ -2,10 +2,11 @@
 const TMDB = {
   async fetch(endpoint, params = {}) {
     const url = new URL(CONFIG.TMDB_BASE + endpoint);
-    url.searchParams.set('api_key', CONFIG.TMDB_API_KEY);
     url.searchParams.set('language', CONFIG.LANG);
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
-    const res = await fetch(url);
+    const res = await window.fetch(url, {
+      headers: { Authorization: `Bearer ${CONFIG.TMDB_BEARER}` }
+    });
     if (!res.ok) throw new Error(`TMDB ${res.status}`);
     return res.json();
   },
