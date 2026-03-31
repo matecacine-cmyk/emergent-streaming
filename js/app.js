@@ -220,12 +220,12 @@ const App = {
     if (end < totalPages) pages.push('...', totalPages);
     return `
       <div class="pagination">
-        <button ${page <= 1 ? 'disabled' : ''} onclick="${callback}(${page - 1})">‹</button>
+        <button ${page <= 1 ? 'disabled' : ''} onclick="(${callback})(${page - 1})">‹</button>
         ${pages.map(p => p === '...'
           ? '<span>...</span>'
-          : `<button class="${p === page ? 'active' : ''}" onclick="${callback}(${p})">${p}</button>`
+          : `<button class="${p === page ? 'active' : ''}" onclick="(${callback})(${p})">${p}</button>`
         ).join('')}
-        <button ${page >= totalPages ? 'disabled' : ''} onclick="${callback}(${page + 1})">›</button>
+        <button ${page >= totalPages ? 'disabled' : ''} onclick="(${callback})(${page + 1})">›</button>
       </div>
     `;
   },
