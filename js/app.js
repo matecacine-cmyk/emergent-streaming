@@ -567,37 +567,34 @@ const Pages = {
     const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
     let current = 0;
     let timer = null;
+    let stopped = false;
+
+    // Expõe função para parar o fallback quando o utilizador troca manualmente
+    frame._stopFallback = () => { stopped = true; clearTimeout(timer); };
 
     const tryNext = () => {
+      if (stopped) return;
       current++;
       if (current >= servers.length) {
         App.showToast('Nenhum servidor disponível de momento.', 'error');
         return;
       }
-      App.showToast(`Servidor sem resposta — a tentar ${servers[current].name}...`);
+      App.showToast(`Servidor indisponível — a tentar ${servers[current].name}...`);
       Pages.changeServer(id, type, season, episode, current);
-      startTimer();
+      // Aguarda mais 10s antes de tentar o seguinte
+      timer = setTimeout(tryNext, 10000);
     };
 
-    const startTimer = () => {
-      clearTimeout(timer);
-      timer = setTimeout(tryNext, 15000);
-    };
-
-    // Quando o iframe carrega (qualquer resposta), cancela o timer
-    const onLoad = () => {
-      clearTimeout(timer);
-      // Remove listener para não interferir com trocas manuais
-      frame.removeEventListener('load', onLoad);
-    };
-    frame.addEventListener('load', onLoad);
-
-    startTimer();
+    // Espera 8s pelo primeiro servidor; se carregar erro (ex: "media unavailable"),
+    // passa ao seguinte sem depender do evento load (que dispara mesmo em páginas de erro)
+    timer = setTimeout(tryNext, 8000);
   },
 
   changeServer(id, type, season, episode, serverIdx) {
     const frame = document.getElementById('player-frame');
     if (!frame) return;
+    // Se o utilizador clicou manualmente, para o fallback automático
+    if (frame._stopFallback) { frame._stopFallback(); frame._stopFallback = null; }
     const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
     frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox');
     frame.src = type === 'movie'
