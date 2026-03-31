@@ -348,7 +348,7 @@ const Pages = {
           <div class="cards-grid">
             ${data.results.map(i => App.renderCard(i, 'movie')).join('')}
           </div>
-          ${App.renderPagination(page, Math.min(data.total_pages, 100), `(p)=>Pages.movies({genre:${genre},page:p})`)}
+          ${App.renderPagination(page, Math.min(data.total_pages, 100), `(p)=>Pages.movies({page:p${genre ? ',genre:' + genre : ''}})`)}
         </div>
       `);
     } catch(e) {
@@ -381,7 +381,7 @@ const Pages = {
           <div class="cards-grid">
             ${data.results.map(i => App.renderCard(i, 'tv')).join('')}
           </div>
-          ${App.renderPagination(page, Math.min(data.total_pages, 100), `(p)=>Pages.series({genre:${genre},page:p})`)}
+          ${App.renderPagination(page, Math.min(data.total_pages, 100), `(p)=>Pages.series({page:p${genre ? ',genre:' + genre : ''}})`)}
         </div>
       `);
     } catch(e) {
@@ -611,7 +611,9 @@ const Pages = {
     const frame = document.getElementById('player-frame');
     const episodeList = document.getElementById('episode-list');
     if (!frame) return;
-    frame.src = CONFIG.EMBED_TV(id, season, 1);
+    const serverIdx = [...document.querySelectorAll('.server-btn')].findIndex(b => b.classList.contains('active'));
+    const idx = serverIdx >= 0 ? serverIdx : 0;
+    frame.src = CONFIG.SERVERS_TV[idx].url(id, season, 1);
     try {
       const data = await TMDB.details('tv', id);
       const s = data.seasons?.find(se => se.season_number == season);
@@ -625,7 +627,11 @@ const Pages = {
 
   changeEpisode(id, season, episode) {
     const frame = document.getElementById('player-frame');
-    if (frame) frame.src = CONFIG.EMBED_TV(id, season, episode);
+    if (frame) {
+      const serverIdx = [...document.querySelectorAll('.server-btn')].findIndex(b => b.classList.contains('active'));
+      const idx = serverIdx >= 0 ? serverIdx : 0;
+      frame.src = CONFIG.SERVERS_TV[idx].url(id, season, episode);
+    }
     document.querySelectorAll('.ep-btn').forEach((btn, i) => {
       btn.classList.toggle('active', i + 1 === episode);
     });
