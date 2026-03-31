@@ -210,7 +210,7 @@ const App = {
     `).join('')}</div>`;
   },
 
-  renderPagination(page, totalPages, callback) {
+  renderPagination(page, totalPages, callbackTpl) {
     if (totalPages <= 1) return '';
     const pages = [];
     const start = Math.max(1, page - 2);
@@ -218,14 +218,15 @@ const App = {
     if (start > 1) pages.push(1, '...');
     for (let i = start; i <= end; i++) pages.push(i);
     if (end < totalPages) pages.push('...', totalPages);
+    const btn = (p) => callbackTpl.replace('__PAGE__', p);
     return `
       <div class="pagination">
-        <button ${page <= 1 ? 'disabled' : ''} onclick="(${callback})(${page - 1})">‹</button>
+        <button ${page <= 1 ? 'disabled' : ''} onclick="${btn(page - 1)}">‹</button>
         ${pages.map(p => p === '...'
           ? '<span>...</span>'
-          : `<button class="${p === page ? 'active' : ''}" onclick="(${callback})(${p})">${p}</button>`
+          : `<button class="${p === page ? 'active' : ''}" onclick="${btn(p)}">${p}</button>`
         ).join('')}
-        <button ${page >= totalPages ? 'disabled' : ''} onclick="(${callback})(${page + 1})">›</button>
+        <button ${page >= totalPages ? 'disabled' : ''} onclick="${btn(page + 1)}">›</button>
       </div>
     `;
   },
@@ -348,7 +349,7 @@ const Pages = {
           <div class="cards-grid">
             ${data.results.map(i => App.renderCard(i, 'movie')).join('')}
           </div>
-          ${App.renderPagination(page, Math.min(data.total_pages, 100), `(p)=>Pages.movies({page:p${genre ? ',genre:' + genre : ''}})`)}
+          ${App.renderPagination(page, Math.min(data.total_pages, 100), `Pages.movies({page:__PAGE__${genre ? ',genre:' + genre : ''}})`)}
         </div>
       `);
     } catch(e) {
@@ -381,7 +382,7 @@ const Pages = {
           <div class="cards-grid">
             ${data.results.map(i => App.renderCard(i, 'tv')).join('')}
           </div>
-          ${App.renderPagination(page, Math.min(data.total_pages, 100), `(p)=>Pages.series({page:p${genre ? ',genre:' + genre : ''}})`)}
+          ${App.renderPagination(page, Math.min(data.total_pages, 100), `Pages.series({page:__PAGE__${genre ? ',genre:' + genre : ''}})`)}
         </div>
       `);
     } catch(e) {
@@ -401,7 +402,7 @@ const Pages = {
           <div class="cards-grid">
             ${data.results.map(i => App.renderCard(i, 'tv')).join('')}
           </div>
-          ${App.renderPagination(page, Math.min(data.total_pages, 50), `(p)=>Pages.anime({page:p})`)}
+          ${App.renderPagination(page, Math.min(data.total_pages, 50), `Pages.anime({page:__PAGE__})`)}
         </div>
       `);
     } catch(e) {
