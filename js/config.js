@@ -1,14 +1,27 @@
 // ─── Configuração ─────────────────────────────────────────────────────────────
-// Obtém a tua API key gratuita em: https://www.themoviedb.org/settings/api
+const LANGS = [
+  { code: 'pt-PT', region: 'PT', label: 'Português',    flag: '🇵🇹', sub: 'pt' },
+  { code: 'pt-BR', region: 'BR', label: 'Português BR', flag: '🇧🇷', sub: 'pt-BR' },
+  { code: 'en-US', region: 'US', label: 'English',      flag: '🇬🇧', sub: 'en' },
+  { code: 'es-ES', region: 'ES', label: 'Español',      flag: '🇪🇸', sub: 'es' },
+  { code: 'fr-FR', region: 'FR', label: 'Français',     flag: '🇫🇷', sub: 'fr' },
+  { code: 'de-DE', region: 'DE', label: 'Deutsch',      flag: '🇩🇪', sub: 'de' },
+  { code: 'it-IT', region: 'IT', label: 'Italiano',     flag: '🇮🇹', sub: 'it' },
+  { code: 'ja-JP', region: 'JP', label: '日本語',        flag: '🇯🇵', sub: 'ja' },
+];
+
 const CONFIG = {
   TMDB_API_KEY: '7deb374bd296e916ea2c85e46f47293e',
   TMDB_BEARER: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3ZGViMzc0YmQyOTZlOTE2ZWEyYzg1ZTQ2ZjQ3MjkzZSIsIm5iZiI6MTc3NDc5NzM4MS40MTIsInN1YiI6IjY5Yzk0MjQ1ZGZlNmRhZmVlMjE0Yzg3NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MT2k-F45SQimFZug4daNmrUOwrswBL0keesQPCI94zg',
   TMDB_BASE: 'https://api.themoviedb.org/3',
   IMG_BASE: 'https://image.tmdb.org/t/p',
-  LANG: 'pt-PT',
-  REGION: 'PT',
+  get LANG() { return localStorage.getItem('emergent_lang') || 'pt-PT'; },
+  get REGION() { return localStorage.getItem('emergent_region') || 'PT'; },
+  get SUBLANG() {
+    const l = LANGS.find(x => x.code === this.LANG);
+    return l ? l.sub : 'pt';
+  },
 
-  // Servidores de embed (por ordem de preferência - menos anúncios primeiro)
   SERVERS_MOVIE: [
     { name: 'Servidor 1', url: (id) => `https://vidsrc.xyz/embed/movie?tmdb=${id}` },
     { name: 'Servidor 2', url: (id) => `https://embed.su/embed/movie/${id}` },
@@ -29,5 +42,4 @@ const CONFIG = {
   ],
   EMBED_MOVIE: (id) => `https://vidsrc.xyz/embed/movie?tmdb=${id}`,
   EMBED_TV: (id, s = 1, e = 1) => `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${s}&episode=${e}`,
-
 };
