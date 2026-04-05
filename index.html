@@ -84,6 +84,19 @@
         <div class="search-suggestions" id="search-suggestions"></div>
       </div>
       <button class="header-icon" onclick="Router.go('mylist')" title="Minha Lista">♡</button>
+      <div class="lang-selector">
+        <button class="lang-btn" id="lang-btn">🇵🇹 PT</button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <div class="lang-option" data-lang="pt-PT" onclick="setLang('pt-PT','PT')">🇵🇹 Português</div>
+          <div class="lang-option" data-lang="pt-BR" onclick="setLang('pt-BR','BR')">🇧🇷 Português BR</div>
+          <div class="lang-option" data-lang="en-US" onclick="setLang('en-US','US')">🇬🇧 English</div>
+          <div class="lang-option" data-lang="es-ES" onclick="setLang('es-ES','ES')">🇪🇸 Español</div>
+          <div class="lang-option" data-lang="fr-FR" onclick="setLang('fr-FR','FR')">🇫🇷 Français</div>
+          <div class="lang-option" data-lang="de-DE" onclick="setLang('de-DE','DE')">🇩🇪 Deutsch</div>
+          <div class="lang-option" data-lang="it-IT" onclick="setLang('it-IT','IT')">🇮🇹 Italiano</div>
+          <div class="lang-option" data-lang="ja-JP" onclick="setLang('ja-JP','JP')">🇯🇵 日本語</div>
+        </div>
+      </div>
     </div>
 
     <button id="install-btn" onclick="deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{deferredPrompt=null; this.style.display='none'})" style="display:none; align-items:center; gap:6px; padding:7px 14px; background:var(--blue); color:#fff; border-radius:6px; font-size:0.82rem; font-weight:600; border:none; cursor:pointer;">⬇ Instalar App</button>
@@ -179,6 +192,19 @@
 <script src="js/app.js"></script>
 
 <script>
+  // Seletor de idioma
+  function setLang(code, region) {
+    localStorage.setItem('emergent_lang', code);
+    localStorage.setItem('emergent_region', region);
+    const lang = LANGS.find(l => l.code === code);
+    document.getElementById('lang-btn').textContent = lang.flag + ' ' + lang.region;
+    document.querySelectorAll('.lang-option').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === code);
+    });
+    document.getElementById('lang-dropdown').classList.remove('open');
+    Router.go(Router.current || 'home', {});
+  }
+
   // Header scroll effect
   window.addEventListener('scroll', () => {
     document.getElementById('header').classList.toggle('solid', window.scrollY > 60);
