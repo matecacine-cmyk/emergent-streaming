@@ -8,6 +8,7 @@ const App = {
     this.bindNav();
     this.bindSearch();
     this.bindChat();
+    this.initLangSelector();
     document.getElementById('year').textContent = new Date().getFullYear();
   },
 
@@ -125,6 +126,23 @@ const App = {
       }, 600);
       msgs.scrollTop = msgs.scrollHeight;
     }
+  },
+
+  initLangSelector() {
+    const btn = document.getElementById('lang-btn');
+    const dropdown = document.getElementById('lang-dropdown');
+    if (!btn) return;
+    const current = CONFIG.LANG;
+    document.querySelectorAll('.lang-option').forEach(el => {
+      el.classList.toggle('active', el.dataset.lang === current);
+    });
+    const active = LANGS.find(l => l.code === current);
+    if (active) btn.textContent = active.flag + ' ' + active.region;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => dropdown.classList.remove('open'));
   },
 
   // Wishlist
@@ -498,6 +516,7 @@ const Pages = {
                   ${App.inWishlist(id) ? '♥ Na Lista' : '♡ Adicionar à Lista'}
                 </button>
                 ${trailer ? `<a class="btn-trailer" href="https://youtube.com/watch?v=${trailer.key}" target="_blank">🎬 Trailer</a>` : ''}
+                <button class="btn-subtitles" onclick="Pages.openWithSubtitles(${id},'${type}',${s},${e})">🌐 Ver legendas</button>
               </div>
             </div>
             ${cast.length ? `
@@ -559,6 +578,17 @@ const Pages = {
     // Espera 8s pelo primeiro servidor; se carregar erro (ex: "media unavailable"),
     // passa ao seguinte sem depender do evento load (que dispara mesmo em páginas de erro)
     timer = setTimeout(tryNext, 8000);
+  },
+
+  openWithSubtitles(id, type, season, episode) {
+    const sub = CONFIG.SUBLANG;
+    let url;
+    if (type === 'movie') {
+      url = `https://vidsrc.xyz/embed/movie?tmdb=${id}&ds_langs=${sub}`;
+    } else {
+      url = `https://vidsrc.xyz/embed/tv?tmdb=${id}&season=${season}&episode=${episode}&ds_langs=${sub}`;
+    }
+    window.open(url, '_blank');
   },
 
   changeServer(id, type, season, episode, serverIdx) {
