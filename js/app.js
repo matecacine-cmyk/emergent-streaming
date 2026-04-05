@@ -109,10 +109,14 @@ const App = {
     send?.addEventListener('click', sendMsg);
     input?.addEventListener('keydown', e => e.key === 'Enter' && sendMsg());
 
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
     function sendMsg() {
       const text = input.value.trim();
       if (!text) return;
-      msgs.innerHTML += `<div class="chat-msg user">${text}</div>`;
+      msgs.innerHTML += `<div class="chat-msg user">${escapeHtml(text)}</div>`;
       input.value = '';
       setTimeout(() => {
         const r = responses[Math.floor(Math.random() * responses.length)];
@@ -296,7 +300,7 @@ const Pages = {
         </div>
       `);
     } catch(e) {
-      Pages.set(`<div class="error-msg"><h2>Erro ao carregar</h2><p>${e.message}</p></div>`);
+      Pages.set(`<div class="error-msg"><h2>Erro ao carregar</h2><p>Não foi possível carregar o conteúdo. Tenta novamente.</p></div>`);
     }
   },
 
@@ -353,7 +357,7 @@ const Pages = {
         </div>
       `);
     } catch(e) {
-      Pages.set(`<div class="error-msg"><p>${e.message}</p></div>`);
+      Pages.set(`<div class="error-msg"><p>Erro ao carregar. Tenta novamente.</p></div>`);
     }
   },
 
@@ -386,7 +390,7 @@ const Pages = {
         </div>
       `);
     } catch(e) {
-      Pages.set(`<div class="error-msg"><p>${e.message}</p></div>`);
+      Pages.set(`<div class="error-msg"><p>Erro ao carregar. Tenta novamente.</p></div>`);
     }
   },
 
@@ -406,7 +410,7 @@ const Pages = {
         </div>
       `);
     } catch(e) {
-      Pages.set(`<div class="error-msg"><p>${e.message}</p></div>`);
+      Pages.set(`<div class="error-msg"><p>Erro ao carregar. Tenta novamente.</p></div>`);
     }
   },
 
@@ -524,7 +528,7 @@ const Pages = {
 
 
     } catch(e) {
-      Pages.set(`<div class="error-msg"><h2>Erro</h2><p>${e.message}</p></div>`);
+      Pages.set(`<div class="error-msg"><h2>Erro</h2><p>Não foi possível carregar. Tenta novamente.</p></div>`);
     }
   },
 
@@ -622,7 +626,7 @@ const Pages = {
         </div>
       `);
     } catch(e) {
-      Pages.set(`<div class="error-msg"><p>${e.message}</p></div>`);
+      Pages.set(`<div class="error-msg"><p>Erro ao carregar. Tenta novamente.</p></div>`);
     }
   },
 };
