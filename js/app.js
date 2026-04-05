@@ -475,12 +475,12 @@ const Pages = {
       if (type === 'movie') {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
-          <iframe id="player-frame" src="${servers[0].url(id)}" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox"></iframe>
+          <iframe id="player-frame" src="${servers[0].url(id)}" allow="autoplay; fullscreen"></iframe>
         `;
       } else if (seasons.length > 0) {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
-          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allow="autoplay; fullscreen" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox"></iframe>
+          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allow="autoplay; fullscreen"></iframe>
           <div class="episode-selector">
             <select id="season-sel" onchange="Pages.changeSeason(${id}, this.value)">
               ${seasons.map(se => `<option value="${se.season_number}" ${se.season_number == s ? 'selected' : ''}>Temporada ${se.season_number}</option>`).join('')}
@@ -597,7 +597,6 @@ const Pages = {
     // Se o utilizador clicou manualmente, para o fallback automático
     if (frame._stopFallback) { frame._stopFallback(); frame._stopFallback = null; }
     const servers = type === 'movie' ? CONFIG.SERVERS_MOVIE : CONFIG.SERVERS_TV;
-    frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox');
     frame.src = type === 'movie'
       ? servers[serverIdx].url(id)
       : servers[serverIdx].url(id, season, episode);
