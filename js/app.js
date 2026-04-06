@@ -475,12 +475,12 @@ const Pages = {
       if (type === 'movie') {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
-          <iframe id="player-frame" src="${servers[0].url(id)}" allow="autoplay; fullscreen"></iframe>
+          <iframe id="player-frame" src="${servers[0].url(id)}" allow="autoplay; fullscreen" allowfullscreen></iframe>
         `;
       } else if (seasons.length > 0) {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
-          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allow="autoplay; fullscreen"></iframe>
+          <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allow="autoplay; fullscreen" allowfullscreen></iframe>
           <div class="episode-selector">
             <select id="season-sel" onchange="Pages.changeSeason(${id}, this.value)">
               ${seasons.map(se => `<option value="${se.season_number}" ${se.season_number == s ? 'selected' : ''}>Temporada ${se.season_number}</option>`).join('')}
