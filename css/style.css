@@ -532,3 +532,41 @@ footer { background: var(--bg2); border-top: 1px solid var(--bg3); padding: 40px
   transition: background 0.2s;
 }
 .btn-subtitles:hover { background: rgba(139,92,246,0.3); }
+
+/* ─── Fullscreen ────────────────────────────────────────────────────────────── */
+.player-wrap { position: relative; }
+
+.fullscreen-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.player-wrap:hover .fullscreen-btn { opacity: 1; }
+
+#player-frame:-webkit-full-screen { width: 100vw !important; height: 100vh !important; }
+#player-frame:-moz-full-screen    { width: 100vw !important; height: 100vh !important; }
+#player-frame:fullscreen          { width: 100vw !important; height: 100vh !important; }
+
+.player-wrap:-webkit-full-screen  { width: 100vw !important; height: 100vh !important; aspect-ratio: unset; }
+.player-wrap:-moz-full-screen     { width: 100vw !important; height: 100vh !important; aspect-ratio: unset; }
+.player-wrap:fullscreen           { width: 100vw !important; height: 100vh !important; aspect-ratio: unset; }
+
+/* Mobile: desativar sticky durante fullscreen */
+@media (max-width: 768px) {
+  .player-wrap:-webkit-full-screen { position: fixed !important; top: 0 !important; }
+  .player-wrap:fullscreen          { position: fixed !important; top: 0 !important; }
+}
