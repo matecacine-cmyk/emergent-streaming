@@ -570,3 +570,10 @@ footer { background: var(--bg2); border-top: 1px solid var(--bg3); padding: 40px
   .player-wrap:-webkit-full-screen { position: fixed !important; top: 0 !important; }
   .player-wrap:fullscreen          { position: fixed !important; top: 0 !important; }
 }
+
+/* ─── Cast secção completa (abaixo do watch-info) ─────────────────────────── */
+.cast-section-full {
+  padding: 20px 4%;
+  border-top: 1px solid var(--bg3);
+}
+.cast-section-full h3 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
