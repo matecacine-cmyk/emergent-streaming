@@ -476,11 +476,13 @@ const Pages = {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
           <iframe id="player-frame" src="${servers[0].url(id)}" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <button class="fullscreen-btn" onclick="Pages.toggleFullscreen()" title="Fullscreen">⛶</button>
         `;
       } else if (seasons.length > 0) {
         playerHtml = `
           <div class="server-bar"><span>Servidor:</span>${serverBtns}</div>
           <iframe id="player-frame" src="${servers[0].url(id, s, e)}" allow="autoplay; fullscreen" allowfullscreen></iframe>
+          <button class="fullscreen-btn" onclick="Pages.toggleFullscreen()" title="Fullscreen">⛶</button>
           <div class="episode-selector">
             <select id="season-sel" onchange="Pages.changeSeason(${id}, this.value)">
               ${seasons.map(se => `<option value="${se.season_number}" ${se.season_number == s ? 'selected' : ''}>Temporada ${se.season_number}</option>`).join('')}
@@ -519,21 +521,21 @@ const Pages = {
                 <button class="btn-subtitles" onclick="Pages.openWithSubtitles(${id},'${type}',${s},${e})">🌐 Ver legendas</button>
               </div>
             </div>
-            ${cast.length ? `
-              <div class="cast-section">
-                <h3>Elenco</h3>
-                <div class="cast-list">
-                  ${cast.map(c => `
-                    <div class="cast-item">
-                      <img src="${TMDB.img(c.profile_path, 'w92')}" alt="${c.name}"
-                           onerror="this.src='https://via.placeholder.com/60x60/222/444?text=?'">
-                      <span>${c.name}</span>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-            ` : ''}
           </div>
+          ${cast.length ? `
+            <div class="cast-section-full">
+              <h3>Elenco</h3>
+              <div class="cast-list">
+                ${cast.map(c => `
+                  <div class="cast-item">
+                    <img src="${TMDB.img(c.profile_path, 'w92')}" alt="${c.name}"
+                         onerror="this.src='https://via.placeholder.com/60x60/222/444?text=?'">
+                    <span>${c.name}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
           ${similar.length ? `
             <div class="similar-section">
               <h2>Conteúdo Semelhante</h2>
@@ -578,6 +580,23 @@ const Pages = {
     // Espera 8s pelo primeiro servidor; se carregar erro (ex: "media unavailable"),
     // passa ao seguinte sem depender do evento load (que dispara mesmo em páginas de erro)
     timer = setTimeout(tryNext, 8000);
+  },
+
+  toggleFullscreen() {
+    const frame = document.getElementById('player-frame');
+    if (!frame) return;
+    const el = frame.parentElement;
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else if (el.requestFullscreen) {
+      el.requestFullscreen();
+    } else if (el.webkitRequestFullscreen) {
+      el.webkitRequestFullscreen();
+    } else if (frame.requestFullscreen) {
+      frame.requestFullscreen();
+    } else if (frame.webkitRequestFullscreen) {
+      frame.webkitRequestFullscreen();
+    }
   },
 
   openWithSubtitles(id, type, season, episode) {
